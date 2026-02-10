@@ -7,168 +7,119 @@
 <style>
   body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-  }
-
-  /* INTRO SCREEN */
-  #intro {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(#87ceeb, #fff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-  }
-
-  .cloud {
-    position: absolute;
-    width: 60%;
-    height: 100%;
-    background: white;
-    top: 0;
-    transition: transform 2s ease-in-out;
-  }
-
-  .cloud.left {
-    left: 0;
-  }
-
-  .cloud.right {
-    right: 0;
-  }
-
-  /* BUNNY */
-  .bunny {
-    font-size: 80px;
-    position: absolute;
-    bottom: 20%;
-    animation: jump 1s infinite alternate;
-  }
-
-  @keyframes jump {
-    from { transform: translateY(0); }
-    to { transform: translateY(-30px); }
-  }
-
-  /* MAIN PAGE */
-  #main {
-    display: none;
     height: 100vh;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: #0e0e0e;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
   }
 
+  #container {
+    max-width: 90%;
+  }
+
   h1 {
-    color: white;
-    font-size: 38px;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-  }
-
-  p {
-    color: white;
-    font-size: 20px;
+    font-size: 28px;
     margin-bottom: 30px;
-  }
-
-  .buttons {
-    position: relative;
-    height: 120px;
+    transition: 0.4s ease;
   }
 
   button {
-    padding: 14px 30px;
-    font-size: 20px;
+    padding: 12px 28px;
+    font-size: 18px;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    position: absolute;
+    margin: 10px;
+    transition: all 0.3s ease;
   }
 
   #yesBtn {
     background: #ff4d6d;
     color: white;
-    left: 0;
   }
 
   #noBtn {
-    background: white;
-    color: #ff4d6d;
-    left: 150px;
+    background: #444;
+    color: white;
   }
 
-  .flowers {
-    font-size: 30px;
-    animation: float 3s infinite linear;
+  img {
+    animation: fadeZoom 1s ease;
   }
 
-  @keyframes float {
-    from { transform: translateY(0); }
-    to { transform: translateY(-20px); }
+  @keyframes fadeZoom {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <div class="cloud left"></div>
-  <div class="cloud right"></div>
-  <div class="bunny">🐰🌸</div>
-</div>
-
-<!-- MUSIC -->
-<audio autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
-
-<!-- MAIN PAGE -->
-<div id="main">
-  <h1>Sufiya 💖</h1>
-  <p>Do you love me? 💖🥺</p>
-
-  <div class="buttons">
-    <button id="yesBtn" onclick="yesClicked()">Yes 😍</button>
-    <button id="noBtn" onmouseover="moveNo()">No 🙈</button>
-  </div>
-
-  <div class="flowers">🌸 🌼 🌺 💐</div>
+<div id="container">
+  <h1 id="text">Sufiya, will you be my Valentine? 💖</h1>
+  <button id="yesBtn" onclick="yesClick()">Yes 💘</button>
+  <button id="noBtn" onclick="noClick()">No 🙈</button>
 </div>
 
 <script>
-  setTimeout(() => {
-    document.querySelector('.cloud.left').style.transform = 'translateX(-100%)';
-    document.querySelector('.cloud.right').style.transform = 'translateX(100%)';
-  }, 1000);
+let step = 0;
+let yesSize = 18;
 
-  setTimeout(() => {
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('main').style.display = 'flex';
-  }, 3000);
+const texts = [
+  "Are you sure? 🥺",
+  "What if I gift you momos? 🥟",
+  "Pretty please 👉👈",
+  "With a bunch of flowers 💐",
+  "What about a date at a restaurant? 🍽️",
+  "Please pookie 🥺",
+  "I'm going to die 💀",
+  "I'm dead ⚰️",
+  "Okay… you’re talking to Srini’s ghost 👻",
+  "Please babe 💔",
+  ":((((",
+  "Pretty please 🥺"
+];
 
-  function moveNo() {
-    const noBtn = document.getElementById("noBtn");
-    const x = Math.random() * 300 - 150;
-    const y = Math.random() * 150 - 75;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+function noClick() {
+  if (step < texts.length) {
+    document.getElementById("text").innerText = texts[step];
+    step++;
+
+    yesSize += 6;
+    const yesBtn = document.getElementById("yesBtn");
+    yesBtn.style.fontSize = yesSize + "px";
+    yesBtn.style.padding =
+      (12 + step * 2) + "px " + (28 + step * 4) + "px";
+  } else {
+    document.getElementById("noBtn").innerText = "No :(";
   }
+}
 
-  function yesClicked() {
-    document.body.innerHTML = `
-      <h1>Yaaay 😍💖</h1>
-      <p>Sufiya, Srini loves you forever 🌸</p>
-      <h1>💍✨</h1>
-    `;
-  }
+function yesClick() {
+  document.body.innerHTML = `
+    <div style="text-align:center;">
+      <img 
+        src="https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif"
+        alt="Bunny Kiss"
+        style="width:240px; border-radius:20px;"
+      >
+      <h1>Woooo!!!!</h1>
+      <h2>I love you my Bunny!! ❤️</h2>
+    </div>
+  `;
+}
 </script>
 
 </body>
 </html>
-
